@@ -5,114 +5,144 @@ import java.io.IOException;
 
 public class Bank {
 
-    private static final String ANSI_CYAN = "\u001B[36m";
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_GREEN = "\u001B[32m";
-
     private static Account [] accounts = new Account[100];
-    private static int currentAccount = 0;
+    private static int accountIndex = 0;
 
     private static Transaction [] transactions = new Transaction[600];
-    private static int currentTransaction = 0;
+    private static int transactionIndex = 0;
 
     public static void createAccount(BufferedReader br) throws IOException {
 
         System.out.print("Enter your national id: ");
         String clientId = br.readLine();
 
-        // check the account is not created //
-        for (int i = 0; i < currentAccount ; i++) {
-            if (accounts[i].isEqualTo(clientId) ) {
-                System.err.println("This account is already created !");
-                return;
-            }
+        // check the account is not created
+        if (findAccountById(clientId) != null) {
+            System.err.println("This account is already created!");
+        } else {
+            System.out.print("Enter your name: ");
+            String name = br.readLine();
+
+            System.out.print("Enter your age: ");
+            int age = Integer.parseInt(br.readLine());
+
+            // Create new holder customer
+            Holder customer = new Holder(clientId, name, age);
+            Account newAccount = new Account(customer, 0);
+            saveAccount(newAccount);
+
+            // Print account
+            System.out.println("\n" + newAccount);
         }
-
-        System.out.print("Enter your name: ");
-        String name = br.readLine();
-
-        System.out.print("Enter your age: ");
-        int age = Integer.parseInt(br.readLine());
-
-        // Create new holder customer
-        Holder customer = new Holder(clientId, name, age);
-        Account newAccount = new Account(customer, 0);
-        saveAccount(newAccount);
-
-        System.out.println();
-        System.out.println("\n" + ANSI_CYAN + newAccount + ANSI_CYAN + "\n");
-        System.out.println(ANSI_RESET);
-
     }
 
     public static void depositToAccount(BufferedReader br) throws IOException {
-
         // get holder national id
         System.out.print("Enter your national id: ");
         String clientId = br.readLine();
 
-        Account target;
-        for (int i = 0; i < currentAccount; i++) {
-            if (accounts[i].isEqualTo(clientId)) {
-                target = accounts[i];
+        // find account by id
+        Account target = findAccountById(clientId);
 
-                // Read amount from user
-                System.out.print("Enter amount: ");
-                float amount = (float) Double.parseDouble(br.readLine());
+        // check if target account found
+        if (target != null) {
 
-                Transaction newTransaction = new Deposit(target, amount);
-                saveTransaction(newTransaction);
+            // get amount
+            System.out.print("Enter amount: ");
+            float amount = (float) Double.parseDouble(br.readLine());
 
-                System.out.println();
-                System.out.println("\n" + ANSI_GREEN + newTransaction + ANSI_GREEN + "\n");
-                System.out.println(ANSI_RESET);
+            // save transaction to our collection
+            Transaction newTransaction = new Deposit(target, amount);
+            saveTransaction(newTransaction);
 
-                return;
-            }
+            // print result
+            System.out.println(newTransaction);
+
+        } else {
+            System.err.println("Account not found!");
         }
-        System.err.println("Account not found");
     }
 
     public static void withdrawFromAccount(BufferedReader br) throws IOException {
+        // get holder national id
         System.out.print("Enter your national id: ");
         String clientId = br.readLine();
 
-        Account target;
-        for (int i = 0; i < currentAccount; i++) {
-            if (accounts[i].isEqualTo(clientId)) {
-                target = accounts[i];
+        // find account by id
+        Account target = findAccountById(clientId);
+        if (target != null) {
+            // Read amount from user
+            System.out.print("Enter amount: ");
+            float amount = (float) Double.parseDouble(br.readLine());
 
-                // Read amount from user
-                System.out.print("Enter amount: ");
-                float amount = (float) Double.parseDouble(br.readLine());
+            // create withdraw transaction
+            Transaction newTransaction = new Withdraw(target, amount);
+            saveTransaction(newTransaction);
 
-                Transaction newTransaction = new Withdraw(target, amount);
-                saveTransaction(newTransaction);
+            //print transaction information
+            System.out.println(newTransaction);
+        } else {
+            System.err.println("Account not found");
+        }
+    }
 
-                System.out.println();
-                System.out.println("\n" + ANSI_GREEN + newTransaction + ANSI_GREEN + "\n");
-                System.out.println(ANSI_RESET);
+    public static void transferBetweenAccounts(BufferedReader br) throws IOException {
+        // get source account id and validate it
+        System.out.print("Enter source account social id: ");
+        String sourceAccountId = br.readLine();
+        Account sourceAccount = findAccountById(sourceAccountId);
+        if (sourceAccount == null) {
+            System.err.println("Account not found!!");
+            return;
+        }
 
-                return;
+        // get target account and validate it
+        System.out.print("Enter target account social id: ");
+        String targetAccountId = br.readLine();
+        Account targetAccount = findAccountById(targetAccountId);
+        if (targetAccount == null) {
+            System.err.println("Account not found!!");
+            return;
+        }
+
+        // get amount
+        System.out.println("Enter the amount: ");
+        int amount = Integer.parseInt(br.readLine());
+
+        // create transaction
+        Transaction newTransaction = new Transfer(sourceAccount, targetAccount, amount);
+        saveTransaction(newTransaction);
+
+        // print transaction
+        System.out.println(newTransaction);
+    }
+
+    // find account by id
+    private static Account findAccountById (String nationalId) {
+        for (int i = 0; i < accountIndex; i++) {
+            if (accounts[i].isEqualTo(nationalId)) {
+                return accounts[i];
             }
         }
-        System.err.println("Account not found");
+        return null;
     }
 
+    //save account to accounts
     private static void saveAccount(Account newAccount) {
-        if (currentAccount == 100) {
+        if (accountIndex == 100) {
             System.err.println("Max account reached");
         }
-        accounts[currentAccount] = newAccount;
-        currentAccount++;
+        accounts[accountIndex] = newAccount;
+        accountIndex++;
     }
 
+    //save transaction to transactions
     private static void saveTransaction(Transaction newTransaction) {
-        if (currentTransaction == 600) {
+        if (transactionIndex == 600) {
             System.err.println("Max transactions reached");
         }
-        transactions[currentTransaction] = newTransaction;
-        currentTransaction++;
+        transactions[transactionIndex] = newTransaction;
+        transactionIndex++;
     }
 
 }

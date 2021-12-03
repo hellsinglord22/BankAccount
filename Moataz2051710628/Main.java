@@ -25,7 +25,7 @@ public class Main {
                 } else if (commandId == 3) {
                     Bank.withdrawFromAccount(br);
                 } else if (commandId == 4) {
-//                    Bank.transferBetweenAccounts();
+                    Bank.transferBetweenAccounts(br);
                 } else if (commandId == 5) {
 //                    Bank.printAccountTransactions();
                 } else if (commandId == 6) {
@@ -35,7 +35,7 @@ public class Main {
                 }
 
                 // Enter to continue
-                String continueRunning = br.readLine();
+                br.readLine();
 
             } catch (IOException error) {
 
