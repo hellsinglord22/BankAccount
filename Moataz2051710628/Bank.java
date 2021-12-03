@@ -1,6 +1,7 @@
 package BankAccount.Moataz2051710628;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Bank {
@@ -149,6 +150,39 @@ public class Bank {
         }
         if (!found) {
             System.err.println("No Transactions Found!");
+        }
+    }
+
+
+    public static void printToFile() {
+        FileWriter writer;
+        try {
+            writer = new FileWriter("data.txt", false);
+        } catch(IOException error) {
+            System.err.println("Error creating connection to data file");
+            return;
+        }
+        try {
+            // write accounts
+            writer.write("ACCOUNTS\n");
+            writer.write("========\n");
+            for (int i = 0; i < accountIndex; i++) {
+                writer.write(accounts[i].toString() + "\n");
+                writer.write("------------\n");
+            }
+            writer.write("\n");
+            writer.write("TRANSACTIONS\n");
+            writer.write("============\n");
+            for (int i = 0; i < transactionIndex; i++) {
+                writer.write(transactions[i].toString() + "\n");
+                writer.write("------------\n");
+            }
+            writer.close();
+
+            System.out.println("DONE WRITING TO data.txt");
+        }
+        catch (IOException error) {
+            System.err.println("Error writing!");
         }
     }
 

@@ -31,6 +31,7 @@ public class Main {
                 } else if (commandId == 6) {
                     Bank.printAccountTransactions(br);
                 } else if (commandId == 7) {
+                    Bank.printToFile();
                 } else {
                     break;
                 }
