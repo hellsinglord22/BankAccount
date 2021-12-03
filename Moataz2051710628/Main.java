@@ -27,9 +27,10 @@ public class Main {
                 } else if (commandId == 4) {
                     Bank.transferBetweenAccounts(br);
                 } else if (commandId == 5) {
-//                    Bank.printAccountTransactions();
+                    Bank.printAccount(br);
                 } else if (commandId == 6) {
-//                    Bank.saveAccountsAndTransactions();
+                    Bank.printAccountTransactions(br);
+                } else if (commandId == 7) {
                 } else {
                     break;
                 }
@@ -57,9 +58,10 @@ public class Main {
         System.out.println("2: Deposit money into account");
         System.out.println("3: Withdraw money from account");
         System.out.println("4: Transfer money between accounts");
-        System.out.println("5: Print details of a transactions");
-        System.out.println("6: Saving all accounts and transactions");
-        System.out.println("7: Exist");
+        System.out.println("5: Print details of a account");
+        System.out.println("6: Print account transactions");
+        System.out.println("7: Saving all accounts and transactions");
+        System.out.println("8: Exist");
     }
 
 }

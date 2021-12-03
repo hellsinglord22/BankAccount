@@ -24,4 +24,9 @@ public class Transaction {
             this.status = "FAIL";
         }
     }
+
+    public Account getTargetAccount() {
+        return targetAccount;
+    }
+
 }

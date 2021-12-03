@@ -5,10 +5,10 @@ import java.io.IOException;
 
 public class Bank {
 
-    private static Account [] accounts = new Account[100];
+    private static final Account [] accounts = new Account[100];
     private static int accountIndex = 0;
 
-    private static Transaction [] transactions = new Transaction[600];
+    private static final Transaction [] transactions = new Transaction[600];
     private static int transactionIndex = 0;
 
     public static void createAccount(BufferedReader br) throws IOException {
@@ -80,7 +80,7 @@ public class Bank {
             saveTransaction(newTransaction);
 
             //print transaction information
-            System.out.println(newTransaction);
+            System.out.println("\n" + newTransaction);
         } else {
             System.err.println("Account not found");
         }
@@ -106,7 +106,7 @@ public class Bank {
         }
 
         // get amount
-        System.out.println("Enter the amount: ");
+        System.out.print("Enter the amount: ");
         int amount = Integer.parseInt(br.readLine());
 
         // create transaction
@@ -114,8 +114,44 @@ public class Bank {
         saveTransaction(newTransaction);
 
         // print transaction
-        System.out.println(newTransaction);
+        System.out.println("\n" + newTransaction);
     }
+
+    public static void printAccount(BufferedReader br) throws IOException {
+        // read national id
+        System.out.print("Enter account national id: ");
+        String nationalId = br.readLine();
+
+        Account account = findAccountById(nationalId);
+
+        if (account != null) {
+            System.out.println("\n" + account);
+        } else {
+            System.err.println("Account not found!");
+        }
+    }
+
+    public static void printAccountTransactions (BufferedReader br) throws IOException {
+        System.out.print("Enter national id: ");
+        String nationalId = br.readLine();
+        Account account = findAccountById(nationalId);
+        if (account == null) {
+            System.err.println("Account not found!");
+            return;
+        }
+
+        boolean found = false;
+        for (int i = 0; i < transactionIndex; i++) {
+            if (transactions[i].getTargetAccount().isEqualTo(nationalId)) {
+                found = true;
+                System.out.println(transactions[i]);
+            }
+        }
+        if (!found) {
+            System.err.println("No Transactions Found!");
+        }
+    }
+
 
     // find account by id
     private static Account findAccountById (String nationalId) {
