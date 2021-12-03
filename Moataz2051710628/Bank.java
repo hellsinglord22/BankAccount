@@ -5,6 +5,10 @@ import java.io.IOException;
 
 public class Bank {
 
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+
     private static Account [] accounts = new Account[100];
     private static int currentAccount = 0;
 
@@ -34,7 +38,65 @@ public class Bank {
         Holder customer = new Holder(clientId, name, age);
         Account newAccount = new Account(customer, 0);
         saveAccount(newAccount);
-        System.out.println(newAccount);
+
+        System.out.println();
+        System.out.println("\n" + ANSI_CYAN + newAccount + ANSI_CYAN + "\n");
+        System.out.println(ANSI_RESET);
+
+    }
+
+    public static void depositToAccount(BufferedReader br) throws IOException {
+
+        // get holder national id
+        System.out.print("Enter your national id: ");
+        String clientId = br.readLine();
+
+        Account target;
+        for (int i = 0; i < currentAccount; i++) {
+            if (accounts[i].isEqualTo(clientId)) {
+                target = accounts[i];
+
+                // Read amount from user
+                System.out.print("Enter amount: ");
+                float amount = (float) Double.parseDouble(br.readLine());
+
+                Transaction newTransaction = new Deposit(target, amount);
+                saveTransaction(newTransaction);
+
+                System.out.println();
+                System.out.println("\n" + ANSI_GREEN + newTransaction + ANSI_GREEN + "\n");
+                System.out.println(ANSI_RESET);
+
+                return;
+            }
+        }
+        System.err.println("Account not found");
+    }
+
+    public static void withdrawFromAccount(BufferedReader br) throws IOException {
+        System.out.print("Enter your national id: ");
+        String clientId = br.readLine();
+
+        Account target;
+        for (int i = 0; i < currentAccount; i++) {
+            if (accounts[i].isEqualTo(clientId)) {
+                target = accounts[i];
+
+                // Read amount from user
+                System.out.print("Enter amount: ");
+                float amount = (float) Double.parseDouble(br.readLine());
+
+                Transaction newTransaction = new Withdraw(target, amount);
+                saveTransaction(newTransaction);
+
+                System.out.println();
+                System.out.println("\n" + ANSI_GREEN + newTransaction + ANSI_GREEN + "\n");
+                System.out.println(ANSI_RESET);
+
+                return;
+            }
+        }
+        System.err.println("Account not found");
     }
 
     private static void saveAccount(Account newAccount) {
@@ -53,15 +115,4 @@ public class Bank {
         currentTransaction++;
     }
 
-    public static void depositIntoAccount(BufferedReader br) throws IOException {
-
-        System.out.print("Enter your national id: ");
-        String holderId = br.readLine();
-
-        // search for the account
-        // if there is an account
-        // check the count of the transactions related to that account if 3 print an error
-        // if not create transaction then add it to the transactions array
-
-    }
 }

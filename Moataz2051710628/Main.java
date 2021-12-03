@@ -17,30 +17,36 @@ public class Main {
                 System.out.print("Choose an option: ");
                 int commandId = Integer.parseInt(br.readLine());
 
+                // Switch between commands
                 if (commandId == 1) {
                     Bank.createAccount(br);
                 } else if (commandId == 2) {
-                    Bank.depositIntoAccount(br);
+                    Bank.depositToAccount(br);
                 } else if (commandId == 3) {
-//                    Bank.withdrawFromAccount();
+                    Bank.withdrawFromAccount(br);
                 } else if (commandId == 4) {
 //                    Bank.transferBetweenAccounts();
                 } else if (commandId == 5) {
-//                    Bank.printTransaction();
+//                    Bank.printAccountTransactions();
                 } else if (commandId == 6) {
 //                    Bank.saveAccountsAndTransactions();
                 } else {
-                    br.close();
                     break;
                 }
 
+                // Enter to continue
                 String continueRunning = br.readLine();
+
             } catch (IOException error) {
+
+                // If error close the program
                 break;
             }
 
         } while (true);
 
+        //  close buffer reader
+        br.close();
 
     }
 

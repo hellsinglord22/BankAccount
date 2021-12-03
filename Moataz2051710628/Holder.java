@@ -15,6 +15,14 @@ public class Holder {
         return clientId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
     @Override
     public String toString() {
         return "Holder {" + "\n" +

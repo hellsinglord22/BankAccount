@@ -1,28 +1,27 @@
 package BankAccount.Moataz2051710628;
 
 public class Transaction {
-    private Account from;
-    private Account to;
-    private float amount;
-    private String type;
-    private String state;
 
-    public Transaction(Account from, Account to, float amount, String type, String state) {
-        this.from = from;
-        this.to = to;
+    protected Account targetAccount;
+    protected float amount;
+    protected String status;
+
+    public Transaction(Account targetAccount, float amount) {
+        this.targetAccount = targetAccount;
         this.amount = amount;
-        this.type = type;
-        this.state = state;
     }
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "From=" + from +
-                ", to=" + to +
-                ", amount=" + amount +
-                ", type='" + type + '\'' +
-                ", state='" + state + '\'' +
-                '}';
+        return "Amount: " + this.amount + "\n" +
+               "Status: " + this.status;
+    }
+
+    public void setStatus(boolean transactionSucceeded) {
+        if (transactionSucceeded) {
+            this.status = "SUCCESS";
+        } else {
+            this.status = "FAIL";
+        }
     }
 }

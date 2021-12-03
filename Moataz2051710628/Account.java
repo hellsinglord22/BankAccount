@@ -10,6 +10,18 @@ public class Account {
         this.balance = balance;
     }
 
+    public void depositAmount (float amount) {
+       this.balance += amount;
+    }
+
+    public boolean canWithdraw (float amount) {
+        return balance - amount >= 0;
+    }
+
+    public void withdrawAmount (float amount) {
+        this.balance -= amount;
+    }
+
     public String getAccountId() {
         return "ac_" + this.customer.getClientId();
     }
@@ -20,10 +32,9 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account: {\n" +
-                "\tcustomer = " + customer + ",\n" +
-                "\tbalance = " + balance + ",\n" +
-                "\taccount number = " + this.getAccountId() + ",\n" +
-                '}';
+        return "account number = " + this.getAccountId() + "\n" +
+               "name = " + customer.getName() + "\n" +
+               "age  = " + customer.getAge() + "\n" +
+               "balance = " + balance;
     }
 }
