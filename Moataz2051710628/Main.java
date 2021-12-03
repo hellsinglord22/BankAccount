@@ -21,6 +21,17 @@ public class Main {
                     Bank.createAccount(br);
                 } else if (commandId == 2) {
                     Bank.depositIntoAccount(br);
+                } else if (commandId == 3) {
+//                    Bank.withdrawFromAccount();
+                } else if (commandId == 4) {
+//                    Bank.transferBetweenAccounts();
+                } else if (commandId == 5) {
+//                    Bank.printTransaction();
+                } else if (commandId == 6) {
+//                    Bank.saveAccountsAndTransactions();
+                } else {
+                    br.close();
+                    break;
                 }
 
                 String continueRunning = br.readLine();
@@ -41,8 +52,8 @@ public class Main {
         System.out.println("3: Withdraw money from account");
         System.out.println("4: Transfer money between accounts");
         System.out.println("5: Print details of a transactions");
-        System.out.println("5: Print details of a transactions");
-        System.out.println("5: Saving all accounts and transactions");
+        System.out.println("6: Saving all accounts and transactions");
+        System.out.println("7: Exist");
     }
 
 }
