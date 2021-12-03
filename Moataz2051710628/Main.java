@@ -1,4 +1,4 @@
-package Moataz2051710628;
+package moataz2051710628;
 import java.io.*;
 
 public class Main {
